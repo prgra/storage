@@ -15,16 +15,18 @@ func init() {
 	stor.mutex.Unlock()
 }
 
-func (d *db) Push(key string, i interface{}) {
-	d.mutex.Lock()
-	d.data[key] = i
-	d.mutex.Unlock()
+// Push :: setter
+func Push(key string, i interface{}) {
+	stor.mutex.Lock()
+	stor.data[key] = i
+	stor.mutex.Unlock()
 }
 
-func (d *db) Get(key string) (interface{}, bool) {
-	d.mutex.RLock()
+// Get :: getter
+func Get(key string) (interface{}, bool) {
+	stor.mutex.RLock()
 	// Здесь если не проверять на существование можно ускороить из - за отсутвия аллокации памяти
-	res, ok := d.data[key]
-	d.mutex.RUnlock()
+	res, ok := stor.data[key]
+	stor.mutex.RUnlock()
 	return res, ok
 }
